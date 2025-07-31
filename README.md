@@ -1,12 +1,12 @@
 # University Research Insights (URI)
 >**Discover your best fit**
 ## Purpose
-The University Research Insights (URI) application is designed to allow users to explore and compare research profiles and performance of universities based on faculty research and publications. Our target users include prospective graduate students who are looking to identify top institutions based on their research interests, policymakers and academic evaluators who are benchmarking institutions for national rankings, accreditation, or funding initiatives, and faculty members who are looking to find potential collaborators for research projects based on universities with more faculty who overlap with their research domain and expertise. Our objectives are to compare and benchmark universities by research impact, visualize university research trends over time, and identify the top-cited researchers within each university.
-## Demo 
-Our demo video can be found [here](google.com).
-## Installation 
-### First, clone our repository  
-`git clone https://github.com/CS411DSO-SU25/Edward_Nikki.git`  
+The University Research Insights (URI) application is designed to allow users to explore and compare research profiles and performance of universities based on faculty research and publications. Target users include prospective graduate students who are looking to identify top institutions based on their research interests, policymakers and academic evaluators who are benchmarking institutions for national rankings, accreditation, or funding initiatives, and faculty members who are looking to find potential collaborators for research projects based on universities with more faculty who overlap with their research domain and expertise. The objectives are to compare and benchmark universities by research impact, visualize university research trends over time, and identify the top-cited researchers within each university.
+## Installation
+### Prerequisites
+This project uses the academicworld database created in MySQL, MongoDB, and Neo4j for my UIUC CS411 Database Systems class. I previously loaded in the academicworld database for each type of database using a script, but unfortunately the scripts are too large to upload to Github. As a result, in order to launch the dashboard, you must have these databases loaded in already.
+### First, clone the repository  
+`git clone https://github.com/kingeddy11/university_research_dashboard.git`  
 ### Second, create a virtual environment and install the required packages
 ```
 conda create -n cs411_final_project python=3.11
@@ -42,7 +42,7 @@ MONGO_PORT=27017
 > [!NOTE]
 > Make sure the neo4j DBMS is started when you run the application.
 ## Usage
-Our application has 7 main functions. Instructions on how to use each one are described below.
+The application has 7 main functions. Instructions on how to use each one are described below.
 ### Faculty Citation Rankings by University
 This widget allows the user to select one university from the dropdown and view the top 10 faculty by their total number of citations on their publications. The pie chart shows each faculty member's share of their total citations among the top 10 at that university. This allows the user to view the faculty that have the highest research influence based on citation count and understand the magnitude of their influence. `American University` is the university that is preselected.
 ### University Publications Over Time
@@ -58,39 +58,18 @@ This widget allows the user to delete a university. The delete widget contains a
 ### Update publications
 This widget contains a series of dropdowns so that the user can select a specific university, faculty member, and their publications. It allows the user to add, update, or delete publications for that faculty member. The `Add` and `Update` buttons open modals with forms for the user to fill out or modify the necessary information in the given fields. Clicking the `Add`, `Update`, or `Delete` buttons will update the publication and faculty_publication table in the academicworld MySQL database accordingly.
 ## Design
-Our application uses the dash framework from `Plotly` to implement our dashboard. We've designed the dashboard using `html`, `dash bootstrap components`, and `Plotly Express`. The dashboard uses a simple color scheme revolving around different shades of blue, includes a title at the top along with the UIUC logo, and places each widget into its own widget card allowing the user to easily distinguish between each widget. Each component is laid out in rows with 2 widgets per row and the widget card background colors are color coded so that the sky blue widgets correspond to widgets relating to keyword scores, the gray widgets correspond to widgets related to Insert/Update/Delete operations, and the navy blue widgets correspond to widgets that are not related to the previous two widget types.
+The application uses the dash framework from `Plotly`. I've designed the dashboard using `html`, `dash bootstrap components`, and `Plotly Express`. The dashboard uses a simple color scheme revolving around different shades of blue, includes a title at the top along with the UIUC logo, and places each widget into its own widget card allowing the user to easily distinguish between each widget. Each component is laid out in rows with 2 widgets per row and the widget card background colors are color coded so that the sky blue widgets correspond to widgets relating to keyword scores, the gray widgets correspond to widgets related to Insert/Update/Delete operations, and the navy blue widgets correspond to widgets that are not related to the previous two widget types.
 ## Implementation
-All of our code is written in Python. There are database util files in the [`utils`](https://github.com/CS411DSO-SU25/Edward_Nikki/tree/main/src/utils) folder to connect to our databases and to implement our widget queries for each type of database. The name of each Python file in the [`utils`](https://github.com/CS411DSO-SU25/Edward_Nikki/tree/main/src/utils) folder corresponds to the type of database we are querying from (i.e. [`mysql_utils.py`](https://github.com/CS411DSO-SU25/Edward_Nikki/blob/main/src/utils/mysql_utils.py) includes all operations on the academicworld MySQL database). The top left widget, middle left widget, bottom left 1 widget, bottom left 2 widget, and bottom right widget queries from the academicworld database in MySQL. The top right widget queries from the academicworld database in MongoDB. The middle right widget queries from the academicworld database in Neo4j. We've used `mysql.connector` Python library to connect to the academicworld database in MySQL, `pymongo` Python library to connect to the academicworld database in MongoDB, and `neo4j` Python library to connect to the academicworld database in Neo4j. Additionally, there are a series of callback methods in our `app.py` file that call the query methods in order to connect them to our app. There is also a series of methods that set and use the callback methods to create dropdowns, inputs, and charts to create each widget. These methods are then injected into our html layout. Lastly we've used the `dotenv` Python library to help us define a `.env` file to store our user specific database configuration files.
+All of the code is written in Python. There are database util files in the [`utils`](https://github.com/kingeddy11/university_research_dashboard/tree/main/src/utils) folder to connect to the databases and to implement the widget queries for each type of database. The name of each Python file in the [`utils`](https://github.com/kingeddy11/university_research_dashboard/tree/main/src/utils) folder corresponds to the type of database I am querying from (i.e. [`mysql_utils.py`](https://github.com/kingeddy11/university_research_dashboard/blob/main/src/utils/mysql_utils.py) includes all operations on the academicworld MySQL database). The top left widget, middle left widget, bottom left 1 widget, bottom left 2 widget, and bottom right widget queries from the academicworld database in MySQL. The top right widget queries from the academicworld database in MongoDB. The middle right widget queries from the academicworld database in Neo4j. I've used `mysql.connector` Python library to connect to the academicworld database in MySQL, `pymongo` Python library to connect to the academicworld database in MongoDB, and `neo4j` Python library to connect to the academicworld database in Neo4j. Additionally, there are a series of callback methods in the `app.py` file that call the query methods in order to connect them to the app. There is also a series of methods that set and use the callback methods to create dropdowns, inputs, and charts to create each widget. These methods are then injected into the html layout. Lastly I've used the `dotenv` Python library to help us define a `.env` file to store the user specific database configuration files.
 ## Database Techniques
-We have implemented 5 database techniques.
+I've implemented 5 database techniques.
 ### Indexes
-We created indexes in our `mysql_utils.py` file and the `mongodb_utils.py` file in order to decrease the latency of our queries. Specifically, in `mysql_utils.py`, indexes were created on `faculty_keyword(faculty_id)`, `faculty_keyword(keyword_id)`, `faculty(university_id)`, and `keyword(name)` to speed up the join operations performed between these tables. In `mongodb_utils.py`, an index was created on `publications.id` to speed up the join operation performed between the `faculty` collection and the `publications` collection.
+I created indexes in the `mysql_utils.py` file and the `mongodb_utils.py` file in order to decrease the latency of the queries. Specifically, in `mysql_utils.py`, indexes were created on `faculty_keyword(faculty_id)`, `faculty_keyword(keyword_id)`, `faculty(university_id)`, and `keyword(name)` to speed up the join operations performed between these tables. In `mongodb_utils.py`, an index was created on `publications.id` to speed up the join operation performed between the `faculty` collection and the `publications` collection.
 ### Trigger
-A trigger is implemented in our `mysql_utils.py` file so that we ensure the removal of both the `publication` entry and `faculty_publication` entry when a publication is deleted.
+A trigger is implemented in `mysql_utils.py` file so that I ensure the removal of both the `publication` entry and `faculty_publication` entry when a publication is deleted.
 ### View
-A view is implemented in our `mysql_utils.py` file in order to simplify the queries for our middle left widget. It aggregates the total faculty keyword scores for each university allowing the middle left widget to simply query from this view rather than having to recompute the total faculty keyword scores each time.
+A view is implemented in `mysql_utils.py` file in order to simplify the queries for the middle left widget. It aggregates the total faculty keyword scores for each university allowing the middle left widget to simply query from this view rather than having to recompute the total faculty keyword scores each time.
 ### Transaction
-We've implemented transactions in our `mysql_utils.py` for adding a university (bottom left widget 1) and deleting a university (bottom left widget 2) to ensure that a university is safely inserted or deleted and if a new university fails to be inserted or deleted, the transaction is rolled back and the database is returned to its state before the transaction began. Additionally, transactions are implemented for retrieving faculty citation rankings by university (top left widget) and updating publications (bottom right widget).
+I've implemented transactions in `mysql_utils.py` for adding a university (bottom left widget 1) and deleting a university (bottom left widget 2) to ensure that a university is safely inserted or deleted and if a new university fails to be inserted or deleted, the transaction is rolled back and the database is returned to its state before the transaction began. Additionally, transactions are implemented for retrieving faculty citation rankings by university (top left widget) and updating publications (bottom right widget).
 ### Constraint
-A unique constraint on university name is implemented in our `mysql_utils.py` file by altering the schema of the university table in the academicworld MySQL database to ensure that there can not be duplicate university names.
-## Contributions
-### Nikki
-| Item      | Time Spent (hours) |
-| :---------------------------------------- | :-----------  |
-| Created repo and initialized app | 2 |
-| Connected the databases to the application | 1 |
-| Wrote the Faculty Citation Rankings by University widget and its corresponding queries | 3 |
-| Wrote the Top Universities by Publication KRC widget and its corresponding queries | 3 |
-| Wrote the Update Publications widget and its corresponding queries | 5 |
-| Drafted this documentation | 2 |
-| ***Total*** | ***16*** |
-### Edward
-| Item      | Time Spent (hours) |
-| :---------------------------------------- | :-----------  |
-| Created an outline of our dashboard through selecting a topic, brainstorming ideas we wanted to analyze, and architecting widgets supporting our analysis | 3 |
-| Designed the overall html layout of the dashboard and color scheme | 4 |
-| Wrote the University Publications Over Time and corresponding queries (top right widget) | 3 |
-| Wrote the Top Universities by Faculty Keyword Score and corresponding queries (middle left widget) | 5 |
-| Wrote the Add University and Delete University widgets and corresponding queries (bottom left widgets) | 5 |
-| Edited and added numerous details to the documentation | 2 |
-| ***Total*** | ***22*** |
+A unique constraint on university name is implemented in `mysql_utils.py` file by altering the schema of the university table in the academicworld MySQL database to ensure that there can not be duplicate university names.
